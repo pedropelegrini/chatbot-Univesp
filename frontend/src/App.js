@@ -7,10 +7,12 @@ function App() {
   useEffect(() => {
     getStatus()
       .then(response => {
-        setMessage(response.data.message);
+        console.log("Backend conectado:", response.data);
+        setMessage(`Backend conectado: ${response.data.status} (${response.data.time})`);
       })
       .catch(error => {
         console.error("Erro ao conectar com o backend:", error);
+        setMessage("Erro ao conectar com o backend");
       });
   }, []);
 

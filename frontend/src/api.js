@@ -1,8 +1,15 @@
 import axios from "axios";
 
-const BACKEND_URL = "http://127.0.0.1:8000";
+const API_URL = `http://${window.location.hostname}:8000`; // usa o host do navegador
 
 export const getStatus = async () => {
-  const response = await axios.get(`${BACKEND_URL}/health`);
-  return response;
+  try {
+    const response = await axios.get(`${API_URL}/health`);
+    console.log("Backend conectado:", response.data);
+    return response;
+  } catch (error) {
+    console.error("Erro ao conectar com o backend:", error);
+    throw error;
+  }
 };
+
