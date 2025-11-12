@@ -28,10 +28,12 @@ def chat(message: Message):
     # Lógica simples do chatbot (você pode expandir isso depois)
     if "oi" in user_text or "olá" in user_text:
         response = "Olá! 😊 Eu sou o Chat Protec. Como posso te ajudar hoje?"
-    elif "Como sei se um site é confiável?" in user_text:
+    elif "como sei se um site é confiável" in user_text:
         response = "Envolve verificar cadeado do navegador (HTTPS), endereço correto, reputação da loja e avaliações."
+    elif "o que é um golpe de phishing" in user_text:
+        response = "Poucos conhecem o termo, mas sofrem com o problema. São mensagens falsas (e-mails, WhatsApp, SMS) que tentam enganar a pessoa para roubar senhas ou dinheiro."
     elif "ajuda" in user_text:
-        response = "Claro! Posso te ajudar a entender como funciona o Chat Protec."
+        response = "Claro! Posso te ajudar. Pode me perguntar..."
     elif "quem é você" in user_text:
         response = "Sou um chatbot desenvolvido para o seu projeto de faculdade usando IA!"
     else:
