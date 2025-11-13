@@ -1,63 +1,55 @@
 import React, { useState } from "react";
-import axios from "axios";
-
-const API_URL = "http://127.0.0.1:8000";
+import { sendMessageToGemini } from "./api";
 
 function App() {
-  const [messages, setMessages] = useState([
-    { sender: "bot", text: "Olá! Eu sou o Chat Protec. Como posso te ajudar hoje?" }
-  ]);
-  const [input, setInput] = useState("");
+  const [message, setMessage] = useState("");
+  const [response, setResponse] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const sendMessage = async () => {
-    if (!input.trim()) return;
-
-    const userMsg = { sender: "user", text: input };
-    setMessages([...messages, userMsg]);
-    setInput("");
+  const handleSend = async () => {
+    if (!message.trim()) return;
+    setLoading(true);
+    setResponse("");
 
     try {
-      const response = await axios.post(`${API_URL}/chat`, { text: input });
-      const botMsg = { sender: "bot", text: response.data.reply };
-      setMessages(prev => [...prev, botMsg]);
+      const data = await sendMessageToGemini(message);
+      setResponse(data.response);
     } catch (error) {
-      setMessages(prev => [...prev, { sender: "bot", text: "Erro ao conectar com o servidor." }]);
-      console.error(error);
+      setResponse("Erro ao conectar ao chatbot 😕");
     }
+
+    setLoading(false);
   };
 
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <h1>Chat Protec</h1>
-      <div
+      <h1>Chat Protec 🤖</h1>
+      <textarea
+        placeholder="Digite sua mensagem..."
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        rows={4}
+        cols={40}
+        style={{ padding: "10px", borderRadius: "8px" }}
+      />
+      <br />
+      <button
+        onClick={handleSend}
         style={{
-          margin: "20px auto",
-          width: "400px",
-          height: "300px",
-          border: "1px solid #ccc",
-          borderRadius: "10px",
-          padding: "10px",
-          overflowY: "auto",
-          textAlign: "left"
+          marginTop: "10px",
+          padding: "10px 20px",
+          borderRadius: "8px",
+          backgroundColor: "#007bff",
+          color: "white",
+          border: "none",
+          cursor: "pointer",
         }}
       >
-        {messages.map((msg, i) => (
-          <p key={i} style={{ textAlign: msg.sender === "user" ? "right" : "left" }}>
-            <b>{msg.sender === "user" ? "Você: " : "Chat Protec: "}</b>
-            {msg.text}
-          </p>
-        ))}
-      </div>
-      <input
-        type="text"
-        value={input}
-        onChange={e => setInput(e.target.value)}
-        placeholder="Digite sua mensagem..."
-        style={{ width: "300px", padding: "10px", borderRadius: "5px" }}
-      />
-      <button onClick={sendMessage} style={{ marginLeft: "10px", padding: "10px" }}>
         Enviar
       </button>
+      <div style={{ marginTop: "30px", fontSize: "18px" }}>
+        {loading ? <p>Processando...</p> : <p>{response}</p>}
+      </div>
     </div>
   );
 }

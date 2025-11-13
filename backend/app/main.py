@@ -1,42 +1,59 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
-from datetime import datetime
+from pydantic import BaseModel
+import google.generativeai as genai
+import os
+from dotenv import load_dotenv
 
+# -----------------------------
+# Carregar variáveis do .env
+# -----------------------------
+load_dotenv()  # lê o arquivo .env
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+
+if not GEMINI_API_KEY:
+    raise ValueError("A variável GEMINI_API_KEY não foi encontrada. Verifique seu arquivo .env!")
+
+# Configurar a API do Gemini
+genai.configure(api_key=GEMINI_API_KEY)
+
+# -----------------------------
+# Inicialização do FastAPI
+# -----------------------------
 app = FastAPI()
 
-# Permitir que o React se conecte
+# Permitir requisições do frontend React
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost:3000"],  # ajuste se usar 127.0.0.1
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+# -----------------------------
+# Modelo de entrada
+# -----------------------------
 class Message(BaseModel):
-    text: str
+    message: str
 
-@app.get("/health")
-def health():
-    return {"status": "ok", "time": datetime.utcnow().isoformat()}
+# -----------------------------
+# Rotas
+# -----------------------------
+@app.get("/")
+def root():
+    return {"message": "Backend do Chat Protec está rodando!"}
 
 @app.post("/chat")
-def chat(message: Message):
-    user_text = message.text.lower()
+async def chat_endpoint(msg: Message):
+    try:
+        # Criar o modelo Gemini
+        model = genai.GenerativeModel("gemini-flash-latest")
 
-    # Lógica simples do chatbot (você pode expandir isso depois)
-    if "oi" in user_text or "olá" in user_text:
-        response = "Olá! 😊 Eu sou o Chat Protec. Como posso te ajudar hoje?"
-    elif "como sei se um site é confiável" in user_text:
-        response = "Envolve verificar cadeado do navegador (HTTPS), endereço correto, reputação da loja e avaliações."
-    elif "o que é um golpe de phishing" in user_text:
-        response = "Poucos conhecem o termo, mas sofrem com o problema. São mensagens falsas (e-mails, WhatsApp, SMS) que tentam enganar a pessoa para roubar senhas ou dinheiro."
-    elif "ajuda" in user_text:
-        response = "Claro! Posso te ajudar. Pode me perguntar..."
-    elif "quem é você" in user_text:
-        response = "Sou um chatbot desenvolvido para o seu projeto de faculdade usando IA!"
-    else:
-        response = "Desculpe, ainda estou aprendendo... tente reformular sua pergunta."
+        # Gerar resposta
+        response = model.generate_content(msg.message)
 
-    return {"reply": response}
+        # Retornar texto da resposta
+        return {"response": response.text}
+    except Exception as e:
+        return {"response": f"Erro ao processar a mensagem: {str(e)}"}
