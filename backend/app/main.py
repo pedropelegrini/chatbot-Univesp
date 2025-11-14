@@ -42,7 +42,7 @@ class Message(BaseModel):
 # -----------------------------
 @app.get("/")
 def root():
-    return {"message": "Backend do Chat Protec está rodando!"}
+    return {"message": "Backend do Chat Amigo está rodando!"}
 
 @app.post("/chat")
 async def chat_endpoint(msg: Message):
