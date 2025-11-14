@@ -23,7 +23,7 @@ function App() {
 
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <h1>Chat Protec 🤖</h1>
+      <h1>Chat Amigo</h1>
       <textarea
         placeholder="Digite sua mensagem..."
         value={message}
