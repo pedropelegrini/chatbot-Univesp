@@ -25,13 +25,16 @@ app = FastAPI()
 # Permitir requisições do frontend React
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # ajuste se usar 127.0.0.1
+    allow_origins=[
+        "http://localhost:3000",  # Permite o desenvolvimento local
+        "https://chatbot-univesp.vercel.app/", # Permite o frontend no Vercel
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-)
-
+ )
 # -----------------------------
+
 # Modelo de entrada
 # -----------------------------
 class Message(BaseModel):
