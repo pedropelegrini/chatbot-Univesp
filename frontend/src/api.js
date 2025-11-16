@@ -1,8 +1,11 @@
 import axios from "axios";
 
-const API_URL = "https://chatbot-univesp-x3.onrender.com";
+// O código verifica se a variável de ambiente está definida.
+// Se estiver no Vercel, usa a URL do Render.
+// Se estiver em desenvolvimento local, usa a URL local (http://localhost:8000 ).
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
-export const sendMessageToGemini = async (message) => {
+export const sendMessageToGemini = async (message ) => {
   try {
     const response = await axios.post(`${API_URL}/chat`, { message });
     return response.data;
