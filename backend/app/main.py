@@ -27,7 +27,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",  # Permite o desenvolvimento local
-        "https://chatbot-univesp.vercel.app", # Permite o frontend no Vercel
+        "https://chatbot-univesp-pedropelegrinis-projects.vercel.app", # Permite o frontend no Vercel
     ],
     allow_credentials=True,
     allow_methods=["*"],
