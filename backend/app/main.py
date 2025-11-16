@@ -3,19 +3,20 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import google.generativeai as genai
 import os
-from dotenv import load_dotenv
 
 # -----------------------------
 # Carregar variáveis do .env
 # -----------------------------
-load_dotenv()  # lê o arquivo .env
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
-if not GEMINI_API_KEY:
-    raise ValueError("A variável GEMINI_API_KEY não foi encontrada. Verifique seu arquivo .env!")
+
 
 # Configurar a API do Gemini
-genai.configure(api_key=GEMINI_API_KEY)
+if GEMINI_API_KEY:
+    genai.configure(api_key=GEMINI_API_KEY)
+else:
+    # Esta mensagem aparecerá nos logs do Render se a chave não for configurada.
+    print("AVISO: GEMINI_API_KEY não encontrada. O endpoint /chat pode falhar.")
 
 # -----------------------------
 # Inicialização do FastAPI
