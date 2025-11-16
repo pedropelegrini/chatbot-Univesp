@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://127.0.0.1:8000"; // ou http://localhost:8000
+const API_URL = "https://chatbot-univesp-x3.onrender.com";
 
 export const sendMessageToGemini = async (message) => {
   try {
