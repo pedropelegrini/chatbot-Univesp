@@ -44,13 +44,13 @@ class Message(BaseModel):
 # -----------------------------
 # Rotas
 # -----------------------------
+@app.options("/{full_path:path}")
+async def options_handler(full_path: str):
+    return {}
+
 @app.get("/")
 def root():
     return {"message": "Backend do Chat Amigo está rodando!"}
-
-@app.options("/api/gemini")
-async def options_gemini():
-    return {}
 
 @app.post("/api/gemini")
 async def chat_endpoint(msg: Message):
