@@ -3,7 +3,7 @@ import axios from "axios";
 // O código verifica se a variável de ambiente está definida.
 // Se estiver no Vercel, usa a URL do Render.
 // Se estiver em desenvolvimento local, usa a URL local (http://localhost:8000 ).
-const API_URL = "https://chatbot-univesp-x3.onrender.com";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 export const sendMessageToGemini = async (message ) => {
   try {
