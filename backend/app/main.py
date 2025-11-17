@@ -48,7 +48,7 @@ class Message(BaseModel):
 def root():
     return {"message": "Backend do Chat Amigo está rodando!"}
 
-@app.post("/chat")
+@app.post("/api/gemini")
 async def chat_endpoint(msg: Message):
     try:
         # Criar o modelo Gemini
