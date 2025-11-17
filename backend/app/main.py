@@ -48,6 +48,10 @@ class Message(BaseModel):
 def root():
     return {"message": "Backend do Chat Amigo está rodando!"}
 
+@app.options("/api/gemini")
+async def options_gemini():
+    return {}
+
 @app.post("/api/gemini")
 async def chat_endpoint(msg: Message):
     try:
