@@ -21,8 +21,10 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:3000", # Adicionado para desenvolvimento local
-        "https://chatbot-univesp-pedropelegrinis-projects.vercel.app" # DOMÍNIO COMPLETO CORRIGIDO
+        "http://localhost:3000",
+        "https://chatbot-univesp.vercel.app", # Domínio curto
+        "https://chatbot-univesp-pedropelegrinis-projects.vercel.app", # Domínio longo
+        "https://chatbot-univesp-x3.onrender.com"
     ],
     allow_credentials=True,
     allow_methods=["*"],
