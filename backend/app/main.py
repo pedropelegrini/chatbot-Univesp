@@ -17,19 +17,26 @@ else:
 
 app = FastAPI()
 
-# CORS
+# CORS CORRIGIDO
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://chatbot-univesp.vercel.app"],
+    allow_origins=[
+        "http://localhost:3000", # Adicionado para desenvolvimento local
+        "https://chatbot-univesp-pedropelegrinis-projects.vercel.app" # DOMÍNIO COMPLETO CORRIGIDO
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-)
+ )
 
 # Modelo
 class Message(BaseModel):
     message: str
 
+# ROTA OPTIONS GENÉRICA (Para resolver o erro 405)
+@app.options("/{full_path:path}")
+async def options_handler(full_path: str):
+    return {}
 
 @app.get("/")
 def root():
@@ -47,11 +54,4 @@ async def chat_endpoint(msg: Message):
         return {"response": f"Erro: {str(e)}"}
 
 
-# Alias para compatibilidade com o frontend
-@app.post("/api/chat")
-async def chat_endpoint_alias(msg: Message):
-    return await chat_endpoint(msg)
 
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8000))  # Render define PORT automaticamente
-    uvicorn.run("main:app", host="0.0.0.0", port=port)
