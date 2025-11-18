@@ -8,7 +8,7 @@ if (!API_URL) {
 
 export const sendMessageToGemini = async (message) => {
   try {
-    const response = await axios.post(`${API_URL}/sua-rota`, { message });
+    const response = await axios.post(`${API_URL}/api/gemini`, { message });
     return response.data;
   } catch (error) {
     console.error("Erro na requisição:", error);
