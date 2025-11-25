@@ -17,13 +17,13 @@ else:
 
 app = FastAPI()
 
-# CORS CORRIGIDO
+# CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
-        "https://chatbot-univesp.vercel.app", # Domínio curto
-        "https://chatbot-univesp-pedropelegrinis-projects.vercel.app", # Domínio longo
+        "https://chatbot-univesp.vercel.app",
+        "https://chatbot-univesp-pedropelegrinis-projects.vercel.app",
         "https://chatbot-univesp-x3.onrender.com"
     ],
     allow_credentials=True,
@@ -35,7 +35,7 @@ app.add_middleware(
 class Message(BaseModel):
     message: str
 
-# ROTA OPTIONS GENÉRICA (Para resolver o erro 405)
+# ROTA OPTIONS GENÉRICA
 @app.options("/{full_path:path}")
 async def options_handler(full_path: str):
     return {}

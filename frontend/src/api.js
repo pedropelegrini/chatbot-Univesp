@@ -1,7 +1,7 @@
-// api.js
+
 import axios from "axios";
 
-// REMOVA O process.env.NEXT_PUBLIC_API_URL E USE A URL DO RENDER DIRETAMENTE
+
 const API_URL = "https://chatbot-univesp-x3.onrender.com";
 
 export const sendMessageToGemini = async (message  ) => {
